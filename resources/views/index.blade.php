@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 $missatges = [];
 
@@ -30,18 +29,18 @@ try {
         // Usuario no autenticado
         $total = paginationModel::obtenerTotalArticulos();
         $pages = ceil($total / $articulosPorPagina);
-        $fetch = obtenerArticulos($connexio, $start, $articulosPorPagina, $orderBy);
+        $fetch = paginationModel::obtenerArticulos($start, $articulosPorPagina, $orderBy);
     } else {
         // Usuario autenticado
-        $total = obtenerTotalArticulosPorUsuario($connexio, $_SESSION['correu']);
+        $total = paginationModel::obtenerTotalArticulosPorUsuario($_SESSION['correu']);
         $pages = ceil($total / $articulosPorPagina);
-        $fetch = obtenerArticulosPorUsuario($connexio, $start, $articulosPorPagina, $_SESSION['correu'], $orderBy);
+        $fetch = paginationModel::obtenerArticulosPorUsuario($start, $articulosPorPagina, $_SESSION['correu'], $orderBy);
     }
 
     // Mostrar los artículos
     $query = $_POST['search-input'] ?? null;
 
-    $resultados = searchBar($connexio, $query);
+    $resultados = paginationModel::searchBar($query);
     if (!empty($resultados)) {
         echo "<div class='card-container'>";
         foreach ($resultados as $entrada) {
@@ -224,7 +223,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="../css/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 

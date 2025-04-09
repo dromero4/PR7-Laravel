@@ -31,4 +31,11 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'recaptcha' => [
+        'site_key' => include(base_path() . '/lib/claus_recaptcha/claus.php'),
+        'secret_key' => include(base_path() . '/lib/claus_recaptcha/claus.php'),
+    ],
+
+
+
 ];
