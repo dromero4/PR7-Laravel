@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\insertarController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SignupController;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,10 @@ Route::get('/signup', function () {
     return view('signup');
 });
 
+Route::get('/insertar', function () {
+    return view('insertar');
+})->name('insertar');
+
 Route::get('/logout', function () {
     // Destruir la sesión
     Session::flush(); // Elimina todos los datos de la sesión
@@ -38,3 +43,4 @@ Route::get('/logout', function () {
 Route::post('/login-controller', [LoginController::class, 'handleLogin'])->name('login-controller');
 Route::post('/signup-controller', [SignupController::class, 'handleSignup'])->name('signup-controller');
 Route::get('/signup-controller', [SignupController::class, 'handleSignup'])->name('signup-controller');
+Route::post('/insertar-controller', [insertarController::class, 'insertar'])->name('insertar-controller');

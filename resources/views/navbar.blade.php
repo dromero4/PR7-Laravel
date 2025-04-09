@@ -40,9 +40,9 @@
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
                     <?php if ((Session::get('usuari') !== null) && !$admin): ?>
-                        <a href="<?= $currentPage === 'insertar' ? $vistaDir . '/insertarArticleQR.php' : $vistaDir . '/insertar.php' ?>" class="nav-link" tabindex="2">
+                        <a href="<?= $currentPage === 'insertar' ? $vistaDir . '/insertarArticleQR.blade.php' : route('insertar') ?>" class="nav-link" tabindex="2">
                             <button class="botones mt-1">
-                                <?= $currentPage === 'insertar' ? 'Insertar article per QR' : '<img src="' . $vistaDir . '/../imagenes/icones/plus-svgrepo-com.svg" id="menu" style="width: 25px" alt="Agregar artículo"> Add article' ?>
+                                <?= $currentPage === 'insertar' ? 'Insertar article per QR' : '<img src="/../imagenes/icones/plus-svgrepo-com.svg" id=menu style="width: 25px" alt="Agregar artículo"> Add article' ?>
                             </button>
                         </a>
 
@@ -60,7 +60,7 @@
                     <?php elseif ((Session::get('usuari') !== null) && $admin): ?>
                         <a href="<?= $currentPage === 'insertar' ? $vistaDir . '/insertarArticleQR.php' : $vistaDir . '/insertar.php' ?>" class="nav-link" tabindex="2">
                             <button class="botones mt-1">
-                                <?= $currentPage === 'insertar' ? 'Insertar article per QR' : '<img src="' . $vistaDir . '/../imagenes/icones/plus-svgrepo-com.svg" id="menu" style="width: 25px" alt="Agregar artículo"> Add article' ?>
+                                <?= $currentPage === 'insertar' ? 'Insertar article per QR' : '<img src="/../imagenes/icones/plus-svgrepo-com.svg" id=menu style="width: 25px" alt="Agregar artículo"> Add article' ?>
                             </button>
                         </a>
 
