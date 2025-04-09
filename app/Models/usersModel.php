@@ -28,13 +28,13 @@ class usersModel extends Model
     ];
 
     // Oculta les dades de la contrasenya en respostes JSON.
-    protected $hidden = ['contrasenya'];
+    protected $hidden = ['password'];
 
 
     // Relació: un usuari pot tenir molts personatges.
     public function users()
     {
-        return $this->hasMany(usersModel::class, 'correu'); // Clau forània taula personatges.
+        return $this->hasMany(usersModel::class, 'correu');
     }
 
     static function verificarCompte($usuari, $contrasenya)
@@ -62,13 +62,14 @@ class usersModel extends Model
             // Verificar si el usuario fue encontrado
             if ($usuariTrobat) {
                 // Retornar el correo del usuario encontrado
-                return $usuariTrobat;
+                return $usuariTrobat->getAttributes();
             } else {
                 // En caso de no encontrar el usuario
                 return null;
             }
         } catch (\Throwable $e) {
             // Manejo de excepciones
+            dd("Error al seleccionar el correo: " . $e->getMessage());
             return null;
         }
     }
@@ -169,5 +170,37 @@ class usersModel extends Model
         } catch (\Throwable $e) {
             throw new \Exception("Error al obtener el usuario por correo: " . $e->getMessage());
         }
+    }
+
+
+    static function verificarAdmin($correu)
+    {
+        try {
+            $user = self::where('correu', $correu)->first();
+
+            if ($user->admin == 1) {
+                return true; // El usuario es admin
+            } else {
+                return false; // El usuario no es admin
+            }
+        } catch (\Throwable $e) {
+            // Manejo de excepciones en caso de que falle la consulta
+            throw new \Exception("Error al verificar el admin: " . $e->getMessage());
+        }
+        // try {
+        //     $verificarAdmin = $connexio->prepare("SELECT admin FROM usuaris WHERE correu = :correu");
+        //     $verificarAdmin->bindParam(':correu', $correu);
+        //     $verificarAdmin->execute();
+
+        //     $resultat = $verificarAdmin->fetch(PDO::FETCH_ASSOC);
+
+        //     if ($resultat['admin'] == 1) {
+        //         return true;
+        //     } else {
+        //         return false;
+        //     }
+        // } catch (Error $e) {
+        //     echo $e->getMessage();
+        // }
     }
 }

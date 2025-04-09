@@ -32,10 +32,10 @@ class LoginController extends Controller
                     // Variables del usuario
                     Session::put('usuari', $usuari);
                     $resultatCorreu = usersModel::seleccionarCorreu($usuari);
-                    if ($resultatCorreu == false) {
+                    if ($resultatCorreu == null) {
                         session()->flash('error', 'No s\'ha trobat l\'usuari');
                     } else {
-                        Session::put('correu', $resultatCorreu->correu);
+                        Session::put('correu', $resultatCorreu['correu']);
                     }
 
 
@@ -50,7 +50,7 @@ class LoginController extends Controller
 
                     // Si las credenciales son correctas
                     session(['intents_recaptcha' => 0]); // Reseteamos el contador de intentos fallidos
-                    Session::put('imatge_perfil', $resultatCorreu->profile_img);
+                    Session::put('imatge_perfil', $resultatCorreu['profile_img']);
 
                     // Establecer el tiempo de expiración de la sesión a 40 minutos
                     $timeout_duration = 40 * 60;
