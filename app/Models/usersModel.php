@@ -187,20 +187,5 @@ class usersModel extends Model
             // Manejo de excepciones en caso de que falle la consulta
             throw new \Exception("Error al verificar el admin: " . $e->getMessage());
         }
-        // try {
-        //     $verificarAdmin = $connexio->prepare("SELECT admin FROM usuaris WHERE correu = :correu");
-        //     $verificarAdmin->bindParam(':correu', $correu);
-        //     $verificarAdmin->execute();
-
-        //     $resultat = $verificarAdmin->fetch(PDO::FETCH_ASSOC);
-
-        //     if ($resultat['admin'] == 1) {
-        //         return true;
-        //     } else {
-        //         return false;
-        //     }
-        // } catch (Error $e) {
-        //     echo $e->getMessage();
-        // }
     }
 }
