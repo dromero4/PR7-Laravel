@@ -2,21 +2,22 @@
 
 $missatges = [];
 
-include(base_path() . '/resources/views/navbar.blade.php');
-require(base_path() . '/app/models/paginationModel.php');
+include_once(base_path() . '/resources/views/navbar.blade.php');
 
 use App\Models\paginationModel;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cookie;
 
 
-$articulosPorPagina = $_POST['post_per_page'] ?? ($_COOKIE['post_per_page'] ?? 10); // Default 10
-$orderBy = $_POST['orderBy'] ?? ($_COOKIE['orderBy'] ?? 'dateAsc'); // Default 'dateAsc'
+$articulosPorPagina = request()->input('post_per_page', Cookie::get('post_per_page', 10)); // Default 10
+$orderBy = request()->input('orderBy', Cookie::get('orderBy', 'dateAsc')); // Default 'dateAsc'
 
 // Guardar las opciones en cookies
 if ($orderBy) {
-    setcookie('orderBy', $orderBy, time() + (86400 * 30), "/");
+    Cookie::queue('orderBy', $orderBy, 60 * 24 * 30); // 30 días
 }
 if ($articulosPorPagina) {
-    setcookie('post_per_page', $articulosPorPagina, time() + (86400 * 30), "/");
+    Cookie::queue('post_per_page', $articulosPorPagina, 60 * 24 * 30); // 30 días
 }
 
 // Determinar la página actual
@@ -25,16 +26,16 @@ $pagina = isset($_GET['page']) && $_GET['page'] > 0 ? intval($_GET['page']) : 1;
 // Calcular el inicio para la paginación
 $start = ($pagina - 1) * $articulosPorPagina;
 try {
-    if (!isset($_SESSION['usuari'])) {
+    if (Session::get('usuari') === null) {
         // Usuario no autenticado
         $total = paginationModel::obtenerTotalArticulos();
         $pages = ceil($total / $articulosPorPagina);
         $fetch = paginationModel::obtenerArticulos($start, $articulosPorPagina, $orderBy);
     } else {
         // Usuario autenticado
-        $total = paginationModel::obtenerTotalArticulosPorUsuario($_SESSION['correu']);
+        $total = paginationModel::obtenerTotalArticulosPorUsuario(Session::get('correu'));
         $pages = ceil($total / $articulosPorPagina);
-        $fetch = paginationModel::obtenerArticulosPorUsuario($start, $articulosPorPagina, $_SESSION['correu'], $orderBy);
+        $fetch = paginationModel::obtenerArticulosPorUsuario($start, $articulosPorPagina, Session::get('correu'), $orderBy);
     }
 
     // Mostrar los artículos
@@ -44,7 +45,7 @@ try {
     if (!empty($resultados)) {
         echo "<div class='card-container'>";
         foreach ($resultados as $entrada) {
-            if (isset($_SESSION['usuari'])) {
+            if (Session::get('usuari') !== null) {
                 echo "<div class='card' id='card-{$entrada['id']}'>
                         <h3>ID: {$entrada['id']}</h3>
                         <hr>
@@ -115,7 +116,7 @@ try {
         if ($fetch) {
             echo "<div class='card-container'>";
             foreach ($fetch as $entrada) {
-                if (isset($_SESSION['usuari'])) {
+                if (Session::get('usuari') !== null) {
                     echo "<div class='card' id='card-{$entrada['id']}'>
                         <h3>ID: {$entrada['id']}</h3>
                         <hr>
