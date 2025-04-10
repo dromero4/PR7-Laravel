@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\forgotpasswordController;
 use App\Http\Controllers\insertarController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\passwordAfterMailController;
 use App\Http\Controllers\SignupController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -40,7 +42,18 @@ Route::get('/logout', function () {
     // Redirigir al usuario a la página de inicio de sesión
     return redirect('/login');
 })->name('logout');
+
+Route::get('/forgot-password', function () {
+    return view('forgotpassword');
+})->name('forgot-password-view');
+
+Route::get('/passwordAfterMail', function () {
+    return view('passwordAfterMail');
+})->name('passwordAfterMail');
+
 Route::post('/login-controller', [LoginController::class, 'handleLogin'])->name('login-controller');
 Route::post('/signup-controller', [SignupController::class, 'handleSignup'])->name('signup-controller');
 Route::get('/signup-controller', [SignupController::class, 'handleSignup'])->name('signup-controller');
 Route::post('/insertar-controller', [insertarController::class, 'insertar'])->name('insertar-controller');
+Route::post('/forgotpassword-controller', [forgotpasswordController::class, 'forgotPassword'])->name('forgot-password-controller');
+Route::post('/passwordAfterMail-controller', [passwordAfterMailController::class, 'passwordAfterMail'])->name('passwordAfterMail-controller');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\articlesModel;
+use App\Models\usersModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -45,39 +46,39 @@ class insertarController extends Controller
                 echo "fuera";
 
                 break;
-            //En cas de voler modificar
-            case 'Modificar':
-                include_once '../vista/modificar.php';
-                if ($id) {
-                    if (verificarID($id, $connexio)) { //verifiquem que l'id de l'article que vol verificar no sigui buit
-                        if (isset($_SESSION['usuari'])) { //En cas d'estar logat, només deixarà modificar l'article creat per aquest mateix usuari
-                            modificar($model, $nom, $preu, $id, getCorreuByID($id, $connexio), $connexio);
-                        }
-                    } else {
-                        $missatges[] = "No s'ha trobat l'ID $id";
-                    }
-                } else {
-                    $missatges[] = "Has d'inserir l'ID";
-                }
+                //     //En cas de voler modificar
+                //     case 'Modificar':
+                //         include_once '../vista/modificar.php';
+                //         if ($id) {
+                //             if (usersModel::verificarID($id)) { //verifiquem que l'id de l'article que vol verificar no sigui buit
+                //                 if (isset($_SESSION['usuari'])) { //En cas d'estar logat, només deixarà modificar l'article creat per aquest mateix usuari
+                //                     modificar($model, $nom, $preu, $id, getCorreuByID($id, $connexio), $connexio);
+                //                 }
+                //             } else {
+                //                 $missatges[] = "No s'ha trobat l'ID $id";
+                //             }
+                //         } else {
+                //             $missatges[] = "Has d'inserir l'ID";
+                //         }
 
-                break;
-            case 'Eliminar':
-                include_once '../vista/eliminar.php';
-                //pel cas d'eliminar
-                if ($id) { //si l'id no es buit
-                    if (verificarID($id, $connexio)) { //verifiquem que l'id existeixi
-                        if (eliminar($connexio, $id)) { //i si existeix, l'elimina
-                            $missatges[] = "Eliminat correctament ID: $id";
-                        } else {
-                            $missatges[] = "No s'ha pogut eliminar...";
-                        }
-                    } else {
-                        //En cas de no haver trobat l'id
-                        $missatges[] = "No s'ha trobat l'ID $id";
-                    }
-                }
+                //         break;
+                //     case 'Eliminar':
+                //         include_once '../vista/eliminar.php';
+                //         //pel cas d'eliminar
+                //         if ($id) { //si l'id no es buit
+                //             if (verificarID($id, $connexio)) { //verifiquem que l'id existeixi
+                //                 if (eliminar($connexio, $id)) { //i si existeix, l'elimina
+                //                     $missatges[] = "Eliminat correctament ID: $id";
+                //                 } else {
+                //                     $missatges[] = "No s'ha pogut eliminar...";
+                //                 }
+                //             } else {
+                //                 //En cas de no haver trobat l'id
+                //                 $missatges[] = "No s'ha trobat l'ID $id";
+                //             }
+                //         }
 
-                break;
+                //         break;
         }
     }
 }

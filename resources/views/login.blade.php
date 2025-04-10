@@ -54,7 +54,8 @@
             <input type="submit" name="github_login" value="Log in with GitHub">
         </form>
 
-        <form action="<?php echo htmlspecialchars(dirname($_SERVER['PHP_SELF']) . '/../vista/forgotPassword.php'); ?>" method="post">
+        <form action="{{ route('forgot-password-view') }}" method="get">
+            @csrf
             <input type="submit" id="forgotPassword" name="forgotPassword" value="Has oblidat la contrassenya?">
 
 

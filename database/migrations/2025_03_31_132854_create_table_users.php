@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('password');
             $table->string('token')->nullable();
-            $table->date('token_expires')->nullable();
+            $table->datetime('token_expires')->nullable();
             $table->string('profile_img')->nullable();
             $table->string('autenticacio')->nullable();
             $table->enum('admin', [0, 1]);

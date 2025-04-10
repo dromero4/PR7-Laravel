@@ -2,9 +2,13 @@
 
 namespace App\Models;
 
+use App\Mail\PasswordResetMail;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class usersModel extends Model
 {
@@ -12,8 +16,8 @@ class usersModel extends Model
     public $timestamps = false;
 
     protected $table = 'users';
-
     protected $primaryKey = 'correu';
+    public $incrementing = false;  // Si la clave primaria no es autoincrementable
 
     protected $fillable = [
         'correu',
@@ -31,11 +35,7 @@ class usersModel extends Model
     protected $hidden = ['password'];
 
 
-    // Relació: un usuari pot tenir molts personatges.
-    public function users()
-    {
-        return $this->hasMany(usersModel::class, 'correu');
-    }
+
 
     static function verificarCompte($usuari, $contrasenya)
     {
@@ -186,6 +186,30 @@ class usersModel extends Model
         } catch (\Throwable $e) {
             // Manejo de excepciones en caso de que falle la consulta
             throw new \Exception("Error al verificar el admin: " . $e->getMessage());
+        }
+    }
+
+    static function enviarMail($correu)
+    {
+
+        try {
+            // Genera el token y la fecha de expiración
+            $token = bin2hex(random_bytes(16)); // Generar un token aleatorio
+            $token_expires = Carbon::now()->addMinutes(30); // Fecha de expiración (30 minutos)
+
+            // Busca al usuario por correo
+            $user = self::where('correu', $correu)->first();
+
+            // Si el usuario existe, asigna el token y la fecha de expiración
+            if ($user) {
+                $user->token = $token;
+                $user->token_expires = $token_expires;
+                $user->save(); // Guardamos los cambios en la base de datos
+            }
+
+            Mail::to($correu)->send(new PasswordResetMail($token, $correu));
+        } catch (\Throwable $e) {
+            throw new \Exception("Error: " . $e->getMessage());
         }
     }
 }
