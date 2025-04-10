@@ -8,7 +8,6 @@ use App\Models\paginationModel;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cookie;
 
-
 $articulosPorPagina = request()->input('post_per_page', Cookie::get('post_per_page', 10)); // Default 10
 $orderBy = request()->input('orderBy', Cookie::get('orderBy', 'dateAsc')); // Default 'dateAsc'
 
@@ -25,6 +24,8 @@ $pagina = isset($_GET['page']) && $_GET['page'] > 0 ? intval($_GET['page']) : 1;
 
 // Calcular el inicio para la paginación
 $start = ($pagina - 1) * $articulosPorPagina;
+
+$pages = 0;
 try {
     if (Session::get('usuari') === null) {
         // Usuario no autenticado
@@ -46,90 +47,87 @@ try {
         echo "<div class='card-container'>";
         foreach ($resultados as $entrada) {
             if (Session::get('usuari') !== null) {
-                echo "<div class='card' id='card-{$entrada['id']}'>
-                        <h3>ID: {$entrada['id']}</h3>
+                echo "<div class='card' id='card-{$entrada->id}'>
+                        <h3>ID: {$entrada->id}</h3>
                         <hr>
-                        <p>Modelo: {$entrada['model']}</p>
-                        <p>Nombre: {$entrada['nom']}</p>
-                        <p>Precio: {$entrada['preu']}€</p>
-                        <p>Correo: {$entrada['correu']}</p>
+                        <p>Modelo: {$entrada->model}</p>
+                        <p>Nombre: {$entrada->nom}</p>
+                        <p>Precio: {$entrada->preu}€</p>
+                        <p>Correo: {$entrada->correu}</p>   
                         <hr>
                         <div class='card-actions'>
                             <form action='controlador/controlador-cards.php' method='post' class='cards-form'>
-                                <input type='hidden' name='id' value='{$entrada['id']}'>
+                                <input type='hidden' name='id' value='{$entrada->id}'>
                                 <button type='button' data-bs-toggle='modal' data-bs-target='#eliminarArticle'>
                                     <img src='imagenes/icones/trash.svg'>
                                 </button>
-
+        
                                 <div class='modal fade' id='eliminarArticle'>
                                     <div class='modal-dialog'>
                                         <div class='modal-content'>
-
                                             <div class='modal-header'>
                                                 <h3 class='modal-title'>Esborrar article</h3>
                                             </div>
-
                                             <div class='modal-body'>
                                                 Estas segur que vols eliminar l'article?
                                             </div>
-
                                             <div class='modal-footer'>
-                                            <button type='submit' data-bs-dismiss='modal' name='article-button' value='delete'>Si</button>
-                                            <button type='button' data-bs-dismiss='modal'>No</button>
+                                                <button type='submit' data-bs-dismiss='modal' name='article-button' value='delete'>Si</button>
+                                                <button type='button' data-bs-dismiss='modal'>No</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </form>
                             <form action='vista/modificar.php' method='post' class='cards-form'>
-                                <input type='hidden' name='id' value='{$entrada['id']}'>
-                                    <button name='article-button' value='edit'>
-                                        <img src='imagenes/icones/edit.svg'>
-                                    </button>
+                                <input type='hidden' name='id' value='{$entrada->id}'>
+                                <button name='article-button' value='edit'>
+                                    <img src='imagenes/icones/edit.svg'>
+                                </button>
                             </form>
                             <form action='controlador/controlador-qr.php' method='get' class='cards-form'>
-                                <input type='hidden' name='id' value='{$entrada['id']}'>
-                                <input type='hidden' name='model' value='{$entrada['model']}'>
-                                <input type='hidden' name='nom' value='{$entrada['nom']}'>
-                                <input type='hidden' name='preu' value='{$entrada['preu']}'>
-                                <input type='hidden' name='correu' value='{$entrada['correu']}'>
-                                    <button name='article-button' value='qr'>
-                                        <img src='imagenes/icones/icons8-código-qr-24.png'>
-                                    </button>
+                                <input type='hidden' name='id' value='{$entrada->id}'>
+                                <input type='hidden' name='model' value='{$entrada->model}'>
+                                <input type='hidden' name='nom' value='{$entrada->nom}'>
+                                <input type='hidden' name='preu' value='{$entrada->preu}'>
+                                <input type='hidden' name='correu' value='{$entrada->correu}'>
+                                <button name='article-button' value='qr'>
+                                    <img src='imagenes/icones/qr-code-svgrepo-com.svg'>
+                                </button>
                             </form>
-                            </div>
-                        </div>";
+                        </div>
+                    </div>";
             } else {
-                echo "<div class='card' id='card-{$entrada['id']}'>
-                <h3>ID: {$entrada['id']}</h3>
-                <hr>
-                <p>Modelo: {$entrada['model']}</p>
-                <p>Nombre: {$entrada['nom']}</p>
-                <p>Precio: {$entrada['preu']}€</p>
-                <p>Correo: {$entrada['correu']}</p>
-                <hr>
-                </div>";
+                echo "<div class='card' id='card-{$entrada->id}'>
+                        <h3>ID: {$entrada->id}</h3>
+                        <hr>
+                        <p>Modelo: {$entrada->model}</p>
+                        <p>Nombre: {$entrada->nom}</p>
+                        <p>Precio: {$entrada->preu}€</p>
+                        <p>Correo: {$entrada->correu}</p>
+                        <hr>
+                    </div>";
             }
-            echo "</div>";
         }
+        echo "</div>";
     } else {
         if ($fetch) {
             echo "<div class='card-container'>";
             foreach ($fetch as $entrada) {
                 if (Session::get('usuari') !== null) {
-                    echo "<div class='card' id='card-{$entrada['id']}'>
-                        <h3>ID: {$entrada['id']}</h3>
+                    echo "<div class='card' id='card-{$entrada->id}'>
+                        <h3>ID: {$entrada->id}</h3>
                         <hr>
-                        <p>Modelo: {$entrada['model']}</p>
-                        <p>Nombre: {$entrada['nom']}</p>
-                        <p>Precio: {$entrada['preu']}€</p>
-                        <p>Correo: {$entrada['correu']}</p>
+                        <p>Modelo: {$entrada->model}</p>
+                        <p>Nombre: {$entrada->nom}</p>
+                        <p>Precio: {$entrada->preu}€</p>
+                        <p>Correo: {$entrada->correu}</p>   
                         <hr>
                         <div class='card-actions'>
                             <form action='controlador/controlador-cards.php' method='post' class='cards-form'>
-                                <input type='hidden' name='id' value='{$entrada['id']}'>
+                                <input type='hidden' name='id' value='{$entrada->id}'>
                                 <button type='button' data-bs-toggle='modal' data-bs-target='#eliminarArticle'>
-                                    <img src='imagenes/icones/trash.svg'>
+                                    fdfsd
                                 </button>
 
                                 <div class='modal fade' id='eliminarArticle'>
@@ -153,36 +151,38 @@ try {
                                 </div>
                             </form>
                             <form action='vista/modificar.php' method='post' class='cards-form'>
-                                <input type='hidden' name='id' value='{$entrada['id']}'>
+                                <input type='hidden' name='id' value='{$entrada->id}'>
                                     <button name='article-button' value='edit'>
-                                        <img src='imagenes/icones/edit.svg'>
+                                        fdsfsdf
                                     </button>
                             </form>
                             <form action='controlador/controlador-qr.php' method='get' class='cards-form'>
-                                <input type='hidden' name='id' value='{$entrada['id']}'>
-                                <input type='hidden' name='model' value='{$entrada['model']}'>
-                                <input type='hidden' name='nom' value='{$entrada['nom']}'>
-                                <input type='hidden' name='preu' value='{$entrada['preu']}'>
-                                <input type='hidden' name='correu' value='{$entrada['correu']}'>
+                                <input type='hidden' name='id' value='{$entrada->id}'>
+                                <input type='hidden' name='model' value='{$entrada->model}'>
+                                <input type='hidden' name='nom' value='{$entrada->nom}'>
+                                <input type='hidden' name='preu' value='{$entrada->preu}'>
+                                <input type='hidden' name='correu' value='{$entrada->correu}'>
                                     <button name='article-button' value='qr'>
-                                        <img src='imagenes/icones/icons8-código-qr-24.png'>
+                                        fdsfsd
                                     </button>
                             </form>
                             </div>
                         </div>";
                 } else {
-                    echo "<div class='card' id='card-{$entrada['id']}'>
-                        <h3>ID: {$entrada['id']}</h3>
+                    echo "<div class='card' id='card-{$entrada->id}'>
+                        <h3>ID: {$entrada->id}</h3>
                         <hr>
-                        <p>Modelo: {$entrada['model']}</p>
-                        <p>Nombre: {$entrada['nom']}</p>
-                        <p>Precio: {$entrada['preu']}€</p>
-                        <p>Correo: {$entrada['correu']}</p>
+                        <p>Modelo: {$entrada->model}</p>
+                        <p>Nombre: {$entrada->nom}</p>
+                        <p>Precio: {$entrada->preu}€</p>
+                        <p>Correo: {$entrada->correu}</p>
                         <hr>
                         </div>";
                 }
             }
             echo "</div>";
+        } else {
+            echo "<p>No hi ha articles</p>";
         }
     }
 } catch (PDOException $e) {
@@ -233,26 +233,24 @@ try {
 
 <body>
     <form action="#" method="post">
-        <label for="orderBy"><strong>Order by || Post Per Page<strong></label>
-        <select name="orderBy" id="orderBy">
-            <option value="dateAsc" <?= $orderBy === 'dateAsc' ? 'selected' : '' ?>>Date (Asc)</option>
-            <option value="dateDesc" <?= $orderBy === 'dateDesc' ? 'selected' : '' ?>>Date (Desc)</option>
-            <option value="AlphabeticallyAsc" <?= $orderBy === 'AlphabeticallyAsc' ? 'selected' : '' ?>>Alphabetically (Asc)</option>
-            <option value="AlphabeticallyDesc" <?= $orderBy === 'AlphabeticallyDesc' ? 'selected' : '' ?>>Alphabetically (Desc)</option>
-        </select>
+        <strong>Order by || Post Per Page<strong>
+                <select name="orderBy" id="orderBy">
+                    <option value="dateAsc" <?= $orderBy === 'dateAsc' ? 'selected' : '' ?>>Date (Asc)</option>
+                    <option value="dateDesc" <?= $orderBy === 'dateDesc' ? 'selected' : '' ?>>Date (Desc)</option>
+                    <option value="AlphabeticallyAsc" <?= $orderBy === 'AlphabeticallyAsc' ? 'selected' : '' ?>>Alphabetically (Asc)</option>
+                    <option value="AlphabeticallyDesc" <?= $orderBy === 'AlphabeticallyDesc' ? 'selected' : '' ?>>Alphabetically (Desc)</option>
+                </select>
 
-        <label for="post_per_page" aria-label="post per page">
-            <select name=" post_per_page" id="post_per_page">
-                <option value="5" <?= $articulosPorPagina == 5 ? 'selected' : '' ?>>5</option>
-                <option value="10" <?= $articulosPorPagina == 10 ? 'selected' : '' ?>>10</option>
-                <option value="15" <?= $articulosPorPagina == 15 ? 'selected' : '' ?>>15</option>
-                <option value="20" <?= $articulosPorPagina == 20 ? 'selected' : '' ?>>20</option>
-            </select>
-        </label>
 
-        <br><br>
+                <select name=" post_per_page" id="post_per_page">
+                    <option value="5" <?= $articulosPorPagina == 5 ? 'selected' : '' ?>>5</option>
+                    <option value="10" <?= $articulosPorPagina == 10 ? 'selected' : '' ?>>10</option>
+                    <option value="15" <?= $articulosPorPagina == 15 ? 'selected' : '' ?>>15</option>
+                    <option value="20" <?= $articulosPorPagina == 20 ? 'selected' : '' ?>>20</option>
+                </select>
 
-        <input type="submit" name="OrderBy" value="Enviar">
+
+                <input type="submit" name="OrderBy" value="Enviar">
     </form>
 
     <form method="POST">

@@ -28,7 +28,8 @@ class paginationModel extends Model
         //$query->execute();
         //return $query->fetchColumn();
 
-        $totalArticulosPorUsuario = DB::table('articles')->whereRaw("correu", "=", "?", [$correu])->get();
+        $totalArticulosPorUsuario = DB::table('articles')->whereRaw("correu = ?", [$correu])->get()->count();
+
         return $totalArticulosPorUsuario;
     }
 
@@ -42,10 +43,10 @@ class paginationModel extends Model
             ->limit($articulosPorPagina)
             ->get();
 
-        return response()->json($articles);
+        return $articles;
     }
 
-    private function generarOrdenSQL($orderBy)
+    static private function generarOrdenSQL($orderBy)
     {
         $ordenesValidos = [
             'dateAsc' => 'id ASC',

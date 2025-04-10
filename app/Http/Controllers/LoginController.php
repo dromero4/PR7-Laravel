@@ -28,7 +28,6 @@ class LoginController extends Controller
             if (!empty($usuari) && !empty($contrassenya)) {
                 // Verificar las credenciales del usuario
                 if (usersModel::verificarCompte($usuari, $contrassenya)) {
-                    session()->flash('success', 'Login successful');
                     // Variables del usuario
                     Session::put('usuari', $usuari);
                     $resultatCorreu = usersModel::seleccionarCorreu($usuari);
