@@ -1,0 +1,220 @@
+/* Estilos generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h3 {
+    text-align: center;
+    margin-top: 3%;
+}
+
+body {
+    position: relative;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    /* Asegura que el fondo cubra toda la ventana */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../imagenes/fotopadel.jpg') repeat center;
+    background-size: cover;
+    filter: blur(5px);
+    /* Aplica el desenfoque */
+    z-index: -1;
+    /* Coloca detrás del contenido del body */
+}
+
+/* Navbar */
+nav {
+    background-color: #3333338e;
+    /* Fondo oscuro */
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    /* Separar los elementos a la izquierda y derecha */
+    align-items: center;
+    position: fixed;
+    /* Fijo en la parte superior */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Sombra */
+}
+
+/* Enlaces del navbar a la izquierda */
+nav .left a {
+    color: white;
+    text-decoration: none;
+    margin-right: 20px;
+    font-size: 16px;
+}
+
+nav .left a:hover {
+    color: #ddd;
+    /* Color al pasar el ratón */
+}
+
+/* Botones de login/signup a la derecha */
+nav .right a button {
+    background-color: #555;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+nav .right a button:hover {
+    background-color: #777;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    font-size: 16px;
+    margin-right: 10px;
+    text-align: center;
+    flex: 1;
+}
+
+.input-group input {
+    padding: 10px;
+    font-size: 16px;
+    width: 250px;
+    /* Ajusta el tamaño de los campos de entrada */
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+.input-group button {
+    padding: 10px 20px;
+    background-color: #525252;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.input-group button:hover {
+    background-color: #606060;
+}
+
+.input-group input:disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+.profile-box {
+    max-width: 500px;
+    margin: 20px auto;
+    /* Centrado */
+    padding: 10px;
+    background-color: #ffffff7d;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Botones generales */
+button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#fotoPerfilActual {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    /* Hace que la imagen sea redonda */
+}
+
+#botoEditarFotoPerfil {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    border: none;
+    width: 100%;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#submitProfile {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    border: none;
+    width: 100%;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#guardarCanvis {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    border: none;
+    width: 100%;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.feedback {
+    padding: 15px;
+    margin: 10px 0;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #f0f0f0;
+    /* Fondo gris claro */
+    color: #333;
+    /* Texto oscuro */
+    border: 1px solid #ccc;
+    /* Borde gris claro */
+    box-shadow: 0 2px 4px rgb(0, 0, 0, 0.1);
+    /* Sombra sutil */
+}
+
+/* alerts */
+.alert {
+    color: #fff !important;
+    text-align: center !important
+}
+
+.alert-success {
+    background-color: #28a745 !important;
+    color: #fff !important;
+}
+
+.alert-danger {
+    background-color: #dc3545 !important;
+    color: #fff !important;
+}

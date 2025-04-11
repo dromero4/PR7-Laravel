@@ -51,7 +51,7 @@
                                 <?= htmlspecialchars(Session::get('correu')) ?>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end bg-dark">
-                                <li><a class="dropdown-item text-white" href="<?= $vistaDir ?>/profile.php" tabindex="4">Perfil</a></li>
+                                <li><a class="dropdown-item text-white" href="/profile" tabindex="4">Perfil</a></li>
                                 <li><a class="dropdown-item text-white" href="/canviarContrasenya" tabindex="5">Canviar contrasenya</a></li>
                                 <li><a class="dropdown-item text-white" href="/logout" tabindex="7">Logout</a></li>
                             </ul>
