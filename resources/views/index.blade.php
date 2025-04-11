@@ -181,8 +181,6 @@ try {
                 }
             }
             echo "</div>";
-        } else {
-            echo "<p>No hi ha articles</p>";
         }
     }
 } catch (PDOException $e) {

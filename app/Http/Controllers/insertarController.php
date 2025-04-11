@@ -27,17 +27,14 @@ class insertarController extends Controller
 
 
                 if (articlesModel::verificarInsertar($model, $nom, $preu)) { //Aqui verifiquem si el model que hem inserit ja existeix a la base de dades
-                    echo "if 1";
                     session()->flash('error', 'Aquest producte ja existeix');
                     return redirect()->back(); // Redirige a la misma página
                 } else {
                     if (!empty($model) && !empty($nom) && !empty($preu)) {
-                        echo "else 1";
                         $results[] = articlesModel::insertar($model, $nom, $preu, Session::get('correu')); //Amb el correu de la persona logada que l'hagi inserit
                         session()->flash('success', 'Insertat correctament');
                         return redirect()->back(); // Redirige a la misma página
                     } else {
-                        echo "else 2";
                         session()->flash('error', 'Has d\'omplir tots els camps');
                         return redirect()->back(); // Redirige a la misma página
                     }

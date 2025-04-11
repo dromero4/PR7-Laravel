@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
@@ -140,7 +141,7 @@ class usersModel extends Model
     static function verificarContrassenya($contrassenya2)
     {
         $resultat = false;
-        if (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$/", $contrassenya2)) {
+        if (preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$/", $contrassenya2)) {
             $resultat = true;
         }
 
@@ -210,6 +211,54 @@ class usersModel extends Model
             Mail::to($correu)->send(new PasswordResetMail($token, $correu));
         } catch (\Throwable $e) {
             throw new \Exception("Error: " . $e->getMessage());
+        }
+    }
+
+    static function verificarCompteCorreu($correu, $contrassenya)
+    {
+        try {
+            // Consulta para obtener el hash de la contraseña a partir del correo
+            $user = self::where('correu', $correu)->first();
+            if ($user) {
+                $hash = $user->password;
+
+                // Verificar la contraseña usando Hash::check
+                if (Hash::check($contrassenya, $hash)) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+    }
+
+    static function reiniciarPassword($correu, $contrassenya, $contrassenyaCanviar)
+    {
+        try {
+            // Buscar el usuario por correo
+            $usuari = self::where('correu', $correu)->first();
+
+            if ($usuari) {
+                // Verificar la contraseña actual
+                if (Hash::check($contrassenya, $usuari->password)) {
+                    // Crear el hash de la nueva contraseña
+                    $contrassenyaHash = Hash::make($contrassenyaCanviar);
+
+                    // Actualizar la contraseña en la base de datos
+                    DB::table('users')
+                        ->where('correu', $correu)
+                        ->update(['password' => $contrassenyaHash]);
+
+                    return true;
+                }
+
+                return false; // Contraseña actual incorrecta
+            }
+
+            return false; // Usuario no encontrado
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
         }
     }
 }

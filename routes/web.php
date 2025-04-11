@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\canviarContrasenyaController;
 use App\Http\Controllers\forgotpasswordController;
 use App\Http\Controllers\insertarController;
 use App\Http\Controllers\LoginController;
@@ -51,9 +52,14 @@ Route::get('/passwordAfterMail', function () {
     return view('passwordAfterMail');
 })->name('passwordAfterMail');
 
+Route::get('/canviarContrasenya', function () {
+    return view('canviarContrasenya');
+});
+
 Route::post('/login-controller', [LoginController::class, 'handleLogin'])->name('login-controller');
 Route::post('/signup-controller', [SignupController::class, 'handleSignup'])->name('signup-controller');
 Route::get('/signup-controller', [SignupController::class, 'handleSignup'])->name('signup-controller');
 Route::post('/insertar-controller', [insertarController::class, 'insertar'])->name('insertar-controller');
 Route::post('/forgotpassword-controller', [forgotpasswordController::class, 'forgotPassword'])->name('forgot-password-controller');
 Route::post('/passwordAfterMail-controller', [passwordAfterMailController::class, 'passwordAfterMail'])->name('passwordAfterMail-controller');
+Route::post('/canviarContrasenya-controller', [canviarContrasenyaController::class, 'canviarContrasenya'])->name('canviarContrasenya-controller');
