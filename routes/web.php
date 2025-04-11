@@ -7,6 +7,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\passwordAfterMailController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SignupController;
+use App\Http\Controllers\usersListController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
@@ -61,6 +62,10 @@ Route::get('/profile', function () {
     return view('profile');
 });
 
+Route::get('/users', function () {
+    return view('users');
+});
+
 Route::post('/login-controller', [LoginController::class, 'handleLogin'])->name('login-controller');
 Route::post('/signup-controller', [SignupController::class, 'handleSignup'])->name('signup-controller');
 Route::get('/signup-controller', [SignupController::class, 'handleSignup'])->name('signup-controller');
@@ -69,3 +74,4 @@ Route::post('/forgotpassword-controller', [forgotpasswordController::class, 'for
 Route::post('/passwordAfterMail-controller', [passwordAfterMailController::class, 'passwordAfterMail'])->name('passwordAfterMail-controller');
 Route::post('/canviarContrasenya-controller', [canviarContrasenyaController::class, 'canviarContrasenya'])->name('canviarContrasenya-controller');
 Route::post('/profile-controller', [ProfileController::class, 'profile'])->name('profile_controller');
+Route::post('/usersList-controller', [usersListController::class, 'usersList'])->name('usersList-controller');

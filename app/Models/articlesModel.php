@@ -63,4 +63,18 @@ class articlesModel extends Model
         //     throw new Error($e->getMessage());
         // }
     }
+
+    static function eliminar($id)
+    {
+        try {
+            // Eliminar el registro de la tabla `articles` por ID
+            $deleted = DB::table('articles')->where('id', $id)->delete();
+
+            // Si la eliminación es exitosa, retorna true
+            return $deleted > 0;
+        } catch (\Exception $e) {
+            // Manejo de excepciones
+            throw new \Exception("Error al eliminar el registro: " . $e->getMessage());
+        }
+    }
 }

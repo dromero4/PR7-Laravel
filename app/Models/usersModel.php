@@ -261,4 +261,32 @@ class usersModel extends Model
             throw new \Exception($e->getMessage());
         }
     }
+
+    static function mostrarDadesUsuaris()
+    {
+        try {
+            // Consulta para obtener los datos de los usuarios
+            return self::select('profile_img', 'correu', 'username')->get();
+        } catch (\Exception $e) {
+            // Manejo de excepciones
+            throw new \Exception("Error al obtener los datos de los usuarios: " . $e->getMessage());
+        }
+    }
+
+    static function deleteUser($correu)
+    {
+        try {
+            // Iniciar una transacción para asegurar que ambas operaciones se realicen de forma atómica
+            DB::transaction(function () use ($correu) {
+                // Eliminar primero los registros de `articles` asociados al correo del usuario
+                DB::table('articles')->where('correu', $correu)->delete();
+
+                // Luego eliminar el usuario de la tabla `usuaris`
+                self::where('correu', $correu)->delete();
+            });
+        } catch (\Exception $e) {
+            // Manejo de excepciones
+            throw new \Exception("Error al eliminar el usuario: " . $e->getMessage());
+        }
+    }
 }

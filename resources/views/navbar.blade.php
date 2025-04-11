@@ -58,7 +58,7 @@
                         </li>
 
                     <?php elseif ((Session::get('usuari') !== null) && $admin): ?>
-                        <a href="<?= $currentPage === 'insertar' ? $vistaDir . '/insertarArticleQR.php' : $vistaDir . '/insertar.php' ?>" class="nav-link" tabindex="2">
+                        <a href="<?= $currentPage === 'insertar' ? $vistaDir . '/insertarArticleQR.blade.php' : route('insertar') ?>" class="nav-link" tabindex="2">
                             <button class="botones mt-1">
                                 <?= $currentPage === 'insertar' ? 'Insertar article per QR' : '<img src="/../imagenes/icones/plus-svgrepo-com.svg" id=menu style="width: 25px" alt="Agregar artículo"> Add article' ?>
                             </button>
@@ -69,9 +69,9 @@
                                 <?= htmlspecialchars(Session::get('correu')) . ': Admin' ?>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end bg-dark">
-                                <li><a class="dropdown-item text-white" href="<?= $vistaDir ?>/users.php" tabindex="4">Usuaris</a></li>
-                                <li><a class="dropdown-item text-white" href="<?= $vistaDir ?>/profile.php" tabindex="5">Perfil</a></li>
-                                <li><a class="dropdown-item text-white" href="<?= $vistaDir ?>/reiniciarPassword.php" tabindex="6">Canviar contrasenya</a></li>
+                                <li><a class="dropdown-item text-white" href="/users" tabindex="4">Usuaris</a></li>
+                                <li><a class="dropdown-item text-white" href="/profile" tabindex="5">Perfil</a></li>
+                                <li><a class="dropdown-item text-white" href="/canviarContrasenya" tabindex="6">Canviar contrasenya</a></li>
                                 <li><a class="dropdown-item text-white" href="/logout" tabindex="7">Logout</a></li>
                             </ul>
                         </li>
