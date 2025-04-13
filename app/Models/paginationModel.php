@@ -33,17 +33,19 @@ class paginationModel extends Model
         return $totalArticulosPorUsuario;
     }
 
-    static public function obtenerArticulosPorUsuario($start, $articulosPorPagina, $correu, $orderBy)
+    static public function obtenerArticulosPorUsuario($articulosPorPagina, $correu, $orderBy)
     {
-        $orderClause = self::generarOrdenSQL($orderBy);
-        $articles = DB::table('articles')
-            ->where('correu', $correu)
-            ->orderByRaw($orderClause)
-            ->offset($start)
-            ->limit($articulosPorPagina)
-            ->get();
 
-        return $articles;
+        if ($articulosPorPagina <= 0) {
+            // Evitar división por cero
+            $articulosPorPagina = 10; // o cualquier valor predeterminado
+        }
+        $fetch = DB::table('articles')
+            ->where('correu', $correu)
+            ->orderByRaw($orderBy)
+            ->paginate($articulosPorPagina); //<----
+
+        return $fetch;
     }
 
     static private function generarOrdenSQL($orderBy)
@@ -62,12 +64,16 @@ class paginationModel extends Model
 
     static function obtenerArticulos($start, $articulosPorPagina, $orderBy)
     {
-        // $orderClause = generarOrdenSQL($orderBy);
-        // $query = $connexio->prepare("SELECT * FROM articles ORDER BY $orderClause LIMIT :start, :articulosPorPagina");
-        // $query->bindValue(':start', $start, PDO::PARAM_INT);
-        // $query->bindValue(':articulosPorPagina', $articulosPorPagina, PDO::PARAM_INT);
-        // $query->execute();
-        // return $query->fetchAll(PDO::FETCH_ASSOC);
+        // Asumiendo que generarOrdenSQL devuelve un string como 'titulo ASC' o 'fecha DESC'
+        $order = explode(' ', self::generarOrdenSQL($orderBy)); // ['titulo', 'ASC']
+        $columna = $order[0] ?? 'id';
+        $direccion = $order[1] ?? 'ASC';
+
+        return DB::table('articles')->orderBy($columna, $direccion)
+            ->skip($start)
+            ->take($articulosPorPagina)
+            ->get()
+            ->toArray();
     }
 
     static function searchBar($query)

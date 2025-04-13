@@ -1,13 +1,16 @@
 <?php
 
+use App\Http\Controllers\ArticuloController;
 use App\Http\Controllers\canviarContrasenyaController;
 use App\Http\Controllers\forgotpasswordController;
 use App\Http\Controllers\insertarController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\passwordAfterMailController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\searchController;
 use App\Http\Controllers\SignupController;
 use App\Http\Controllers\usersListController;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
@@ -75,3 +78,5 @@ Route::post('/passwordAfterMail-controller', [passwordAfterMailController::class
 Route::post('/canviarContrasenya-controller', [canviarContrasenyaController::class, 'canviarContrasenya'])->name('canviarContrasenya-controller');
 Route::post('/profile-controller', [ProfileController::class, 'profile'])->name('profile_controller');
 Route::post('/usersList-controller', [usersListController::class, 'usersList'])->name('usersList-controller');
+Route::post('/', [searchController::class, 'search'])->name('search');
+Route::get('/', [ArticuloController::class, 'index'])->name('articulos.index');

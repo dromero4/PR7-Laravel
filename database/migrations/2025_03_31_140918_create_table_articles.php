@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nom');
             $table->integer('preu');
             $table->string('correu');
+            $table->date('created_at')->default(now());
         });
     }
 

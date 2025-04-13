@@ -32,6 +32,8 @@ try {
         $total = paginationModel::obtenerTotalArticulos();
         $pages = ceil($total / $articulosPorPagina);
         $fetch = paginationModel::obtenerArticulos($start, $articulosPorPagina, $orderBy);
+        $offset = ($pagina - 1) * $articulosPorPagina;
+        $fetch = array_slice($fetch, $offset, $articulosPorPagina);
     } else {
         // Usuario autenticado
         $total = paginationModel::obtenerTotalArticulosPorUsuario(Session::get('correu'));
@@ -42,7 +44,7 @@ try {
     // Mostrar los artículos
     $query = $_POST['search-input'] ?? null;
 
-    $resultados = paginationModel::searchBar($query);
+    $resultados = paginationModel::searchBar($query); //to do yet
     if (!empty($resultados)) {
         echo "<div class='card-container'>";
         foreach ($resultados as $entrada) {
@@ -187,76 +189,99 @@ try {
     echo "Error: " . $e->getMessage();
 }
 ?>
+
+<!-- 
 <div class="pagination">
-    <?php if ($pages > 1): ?>
-        <!-- Flecha anterior -->
-        <?php if ($pagina > 1): ?>
-            <a href="?page=<?= $pagina - 1; ?>" class="arrow">&laquo;</a>
-        <?php endif; ?>
+    @if ($pages > 1)
+    <div class="pagination text-center mt-4">
+        {{-- Flecha anterior --}}
+        @if ($pagina > 1)
+        <a href="{{ url()->current() }}?page={{ $pagina - 1 }}" class="arrow">&laquo;</a>
+        @endif
 
-        <!-- Mostrar solo 3 botones en función de la página actual -->
-        <?php
-        $start = max(1, $pagina - 1); // Calcula el inicio del rango
-        $end = min($pages, $start + 2); // Calcula el fin del rango
-        for ($i = $start; $i <= $end; $i++): ?>
-            <a href="?page=<?= htmlspecialchars($i); ?>"
-                class="<?= $i === $pagina ? 'active' : ''; ?>">
-                <?= htmlspecialchars($i); ?>
+        {{-- Mostrar solo 3 botones en función de la página actual --}}
+        @php
+        $start = max(1, $pagina - 1);
+        $end = min($pages, $start + 2);
+        @endphp
+
+        @for ($i = $start; $i <= $end; $i++)
+            <a href="{{ url()->current() }}?page={{ $i }}"
+            class="{{ $i === $pagina ? 'active' : '' }}">
+            {{ $i }}
             </a>
-        <?php endfor; ?>
+            @endfor
 
-        <!-- Flecha siguiente -->
-        <?php if ($pagina < $pages): ?>
-            <a href="?page=<?= $pagina + 1; ?>" class="arrow">&raquo;</a>
-        <?php endif; ?>
-    <?php endif; ?>
-</div>
+            {{-- Flecha siguiente --}}
+            @if ($pagina < $pages)
+                <a href="{{ url()->current() }}?page={{ $pagina + 1 }}" class="arrow">&raquo;</a>
+                @endif
+    </div>
+    @endif
+</div> -->
 
 
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Listado de artículos</title>
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-
 </head>
 
 <body>
-    <form action="#" method="post">
-        <strong>Order by || Post Per Page<strong>
-                <select name="orderBy" id="orderBy">
-                    <option value="dateAsc" <?= $orderBy === 'dateAsc' ? 'selected' : '' ?>>Date (Asc)</option>
-                    <option value="dateDesc" <?= $orderBy === 'dateDesc' ? 'selected' : '' ?>>Date (Desc)</option>
-                    <option value="AlphabeticallyAsc" <?= $orderBy === 'AlphabeticallyAsc' ? 'selected' : '' ?>>Alphabetically (Asc)</option>
-                    <option value="AlphabeticallyDesc" <?= $orderBy === 'AlphabeticallyDesc' ? 'selected' : '' ?>>Alphabetically (Desc)</option>
-                </select>
 
+    <form action="{{ url('/') }}" method="get">
+        <strong>Ordenar por || Artículos por página</strong>
 
-                <select name=" post_per_page" id="post_per_page">
-                    <option value="5" <?= $articulosPorPagina == 5 ? 'selected' : '' ?>>5</option>
-                    <option value="10" <?= $articulosPorPagina == 10 ? 'selected' : '' ?>>10</option>
-                    <option value="15" <?= $articulosPorPagina == 15 ? 'selected' : '' ?>>15</option>
-                    <option value="20" <?= $articulosPorPagina == 20 ? 'selected' : '' ?>>20</option>
-                </select>
+        <select name="orderBy" id="orderBy">
+            <option value="dateAsc" {{ $orderBy === 'dateAsc' ? 'selected' : '' }}>Fecha (Asc)</option>
+            <option value="dateDesc" {{ $orderBy === 'dateDesc' ? 'selected' : '' }}>Fecha (Desc)</option>
+            <option value="AlphabeticallyAsc" {{ $orderBy === 'AlphabeticallyAsc' ? 'selected' : '' }}>Alfabéticamente (Asc)</option>
+            <option value="AlphabeticallyDesc" {{ $orderBy === 'AlphabeticallyDesc' ? 'selected' : '' }}>Alfabéticamente (Desc)</option>
+        </select>
 
+        <select name="post_per_page" id="post_per_page">
+            <option value="5" {{ $articulosPorPagina == 5 ? 'selected' : '' }}>5</option>
+            <option value="10" {{ $articulosPorPagina == 10 ? 'selected' : '' }}>10</option>
+            <option value="15" {{ $articulosPorPagina == 15 ? 'selected' : '' }}>15</option>
+            <option value="20" {{ $articulosPorPagina == 20 ? 'selected' : '' }}>20</option>
+        </select>
 
-                <input type="submit" name="OrderBy" value="Enviar">
+        <button type="submit">Enviar</button>
     </form>
-
-    <form method="POST">
-        <label for="post_per_page" aria-label="search-input"></label>
+    <form method="POST" action="{{ route('search') }}">
+        @csrf
+        <label for="search-input" aria-label="search-input"></label>
         <input type="text" name="search-input" placeholder="Cercar articles per nom">
         <label for="post_per_page" aria-label="search-button"></label>
         <input type="submit" name="search-button" value="Search">
     </form>
+    <!-- 
+    <div class="card-container">
+        @foreach ($fetch as $entrada)
+        <div class="card">
+            <h3>ID: {{ $entrada->id }}</h3>
+            <hr>
+            <p>Modelo: {{ $entrada->model }}</p>
+            <p>Nombre: {{ $entrada->nom }}</p>
+            <p>Precio: {{ $entrada->preu }}€</p>
+            <p>Correo: {{ $entrada->correu }}</p>
+            <hr>
+            <!-- Aquí puedes poner botones de editar, borrar, etc si hace falta -->
+    </div>
+    @endforeach
+    </div> -->
+
+    <div class="pagination">
+        {{ $fetch->links() }}
+    </div>
+
 </body>
 
 </html>
