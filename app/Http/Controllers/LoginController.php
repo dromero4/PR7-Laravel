@@ -73,22 +73,22 @@ class LoginController extends Controller
 
 
 
-                    // // Recordar al usuario (Remember Me)
-                    // $remember = $_POST['rememberMe'] ?? null;
-                    // if ($remember === 'on') {
-                    //     // Si está marcado, guardar las cookies
-                    //     setcookie('cookie_user', $usuari, time() + 60 * 60 * 24 * 30, "/"); // 1 mes
-                    //     setcookie('cookie_password', $contrassenya, time() + 60 * 60 * 24 * 30, "/");
-                    // } else {
-                    //     // Si no está marcado, eliminar las cookies
-                    //     unset($_COOKIE['cookie_user']);
-                    //     unset($_COOKIE['cookie_password']);
-                    // }
+                    // Recordar al usuario (Remember Me)
+                    $remember = $_POST['rememberMe'] ?? null;
+                    if ($remember === 'on') {
+                        // Si está marcado, guardar las cookies
+                        setcookie('cookie_user', $usuari, time() + 60 * 60 * 24 * 30, "/"); // 1 mes
+                        setcookie('cookie_password', $contrassenya, time() + 60 * 60 * 24 * 30, "/");
+                    } else {
+                        // Si no está marcado, eliminar las cookies
+                        unset($_COOKIE['cookie_user']);
+                        unset($_COOKIE['cookie_password']);
+                    }
 
-                    // // Redirigir a la página principal si ya está logueado
-                    // if (isset($_SESSION['usuari'])) {
-                    //     return redirect('/');
-                    // }
+                    // Redirigir a la página principal si ya está logueado
+                    if (isset($_SESSION['usuari'])) {
+                        return redirect('/');
+                    }
                     return view('index');
                 } else {
                     // Si la contraseña es incorrecta
