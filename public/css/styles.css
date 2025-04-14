@@ -158,6 +158,16 @@ table tr:nth-child(even) {
     border-radius: 4px;
 }
 
+.authlogin {
+    /* centrar el boton a la mitad de la pantalla */
+    position: absolute;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffffb4;
+
+}
+
 .pagination a.active {
     background-color: #007bff;
     color: white;

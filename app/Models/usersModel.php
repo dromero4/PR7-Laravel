@@ -6,12 +6,12 @@ use App\Mail\PasswordResetMail;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
-class usersModel extends Model
+class usersModel extends Authenticatable
 {
     // Desactiva els camps automàtics created_at i updated_at.
     public $timestamps = false;

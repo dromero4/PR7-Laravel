@@ -5,6 +5,7 @@ use App\Http\Controllers\canviarContrasenyaController;
 use App\Http\Controllers\forgotpasswordController;
 use App\Http\Controllers\insertarController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\passwordAfterMailController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\searchController;
@@ -68,6 +69,11 @@ Route::get('/profile', function () {
 Route::get('/users', function () {
     return view('users');
 });
+
+//github
+Route::get('/auth/github', [OAuthController::class, 'redirectToGitHub'])->name('github.redirect');
+Route::get('/auth/github/callback', [OAuthController::class, 'handleGitHubCallback']);
+
 
 Route::post('/login-controller', [LoginController::class, 'handleLogin'])->name('login-controller');
 Route::post('/signup-controller', [SignupController::class, 'handleSignup'])->name('signup-controller');

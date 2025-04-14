@@ -190,7 +190,7 @@ try {
 }
 ?>
 
-<!-- 
+
 <div class="pagination">
     @if ($pages > 1)
     <div class="pagination text-center mt-4">
@@ -218,7 +218,7 @@ try {
                 @endif
     </div>
     @endif
-</div> -->
+</div>
 
 
 
@@ -262,25 +262,9 @@ try {
         <label for="post_per_page" aria-label="search-button"></label>
         <input type="submit" name="search-button" value="Search">
     </form>
-    <!-- 
-    <div class="card-container">
-        @foreach ($fetch as $entrada)
-        <div class="card">
-            <h3>ID: {{ $entrada->id }}</h3>
-            <hr>
-            <p>Modelo: {{ $entrada->model }}</p>
-            <p>Nombre: {{ $entrada->nom }}</p>
-            <p>Precio: {{ $entrada->preu }}€</p>
-            <p>Correo: {{ $entrada->correu }}</p>
-            <hr>
-            <!-- Aquí puedes poner botones de editar, borrar, etc si hace falta -->
-    </div>
-    @endforeach
-    </div> -->
 
-    <div class="pagination">
-        {{ $fetch->links() }}
-    </div>
+
+
 
 </body>
 

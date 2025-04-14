@@ -50,9 +50,9 @@
 
         </form>
 
-        <form action="<?php echo htmlspecialchars(dirname($_SERVER['PHP_SELF']) . '/../controlador/controlador-github.php'); ?>" method="post">
-            <input type="submit" name="github_login" value="Log in with GitHub">
-        </form>
+        <a href="{{ route('github.redirect') }}" class="authlogin">
+            <button type="button">Log in with GitHub</button>
+        </a>
 
         <form action="{{ route('forgot-password-view') }}" method="get">
             @csrf
